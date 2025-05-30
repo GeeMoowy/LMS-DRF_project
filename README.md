@@ -27,6 +27,8 @@
 `poetry add python-dotenv`
 `poetry add psycopg2`
 `poetry add pillow`
+`poetry add django-filter`
+
 
 ---
 #### АВТОР:
