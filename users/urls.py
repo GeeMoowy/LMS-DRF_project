@@ -1,11 +1,14 @@
-from django.urls import path
+from rest_framework.routers import SimpleRouter
 
-from users.views import UserProfileUpdateApiView
+from users.views import UserViewSet
 from users.apps import UsersConfig
 
 
 app_name = UsersConfig.name
 
-urlpatterns = [
-    path('profile/update/<int:pk>/', UserProfileUpdateApiView.as_view(), name='profile_update'),
-]
+router = SimpleRouter()
+router.register('', UserViewSet)
+
+urlpatterns = []
+
+urlpatterns += router.urls

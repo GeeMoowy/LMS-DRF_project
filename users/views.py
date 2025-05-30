@@ -1,10 +1,9 @@
-from rest_framework.exceptions import NotFound
-from rest_framework.generics import UpdateAPIView
+from rest_framework.viewsets import ModelViewSet
 
 from users.models import User
 from users.serializers import UserProfileSerializer
 
 
-class UserProfileUpdateApiView(UpdateAPIView):
+class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
