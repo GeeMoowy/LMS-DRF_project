@@ -9,7 +9,10 @@
 ### Разработка LMS-системы.
 В этом приложении мы будем реализовывать LMS-систему, в которой каждый желающий может размещать свои полезные материалы или курсы.
 
-- Реализована 
+- Подключены DRF в настройках проекта.
+- Созданы модели: User, Course, Lesson.
+- Описаны CRUD для моделей курса и урока.
+- Реализован эндпоинт для редактирования профиля любого пользователя на основе Generic.
 
 ---
 ![лого успешной операции](https://blog.maxford.ru/upload/000/u1/5/d/python-logo-small.png)
@@ -21,7 +24,6 @@
 `git clone git@github.com:GeeMoowy/LMS-DRF_project.git`
 `poetry add django`
 `poetry add djangorestframework`
-`poetry add redis`
 `poetry add python-dotenv`
 `poetry add psycopg2`
 `poetry add pillow`
