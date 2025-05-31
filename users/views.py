@@ -3,13 +3,13 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.viewsets import ModelViewSet
 
 from users.models import User, Payment
-from users.serializers import UserProfileSerializer, PaymentSerializer
+from users.serializers import UserSerializer, PaymentSerializer, UserProfileSerializer, UserProfileUpdateSerializer
 
 
 class UserViewSet(ModelViewSet):
     """Контроллер для пользователя"""
     queryset = User.objects.all()
-    serializer_class = UserProfileSerializer
+    serializer_class = UserSerializer
 
 
 class PaymentViewSet(ModelViewSet):
@@ -24,3 +24,16 @@ class PaymentViewSet(ModelViewSet):
     ]
     ordering_fields = ['payment_date']  # Сортировка по дате (/payments/?ordering=payment_date)
     ordering = ['-payment_date']  # Сортировка по умолчанию (новые сначала)
+
+
+class UserProfileViewSet(ModelViewSet):
+    """Контроллер для профиля пользователя"""
+    queryset = User.objects.all()
+    serializer_class = UserProfileSerializer
+
+    def get_serializer_class(self):
+        """Выбираем сериализатор в зависимости от действия"""
+        if self.action in ['update', 'partial_update']:
+            return UserProfileUpdateSerializer
+        return super().get_serializer_class()
+

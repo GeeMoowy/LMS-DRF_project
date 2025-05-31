@@ -5,7 +5,10 @@ from lms.models import Course, Lesson
 
 
 class User(AbstractUser):
-    """Создание модели пользователь"""
+    """Модель пользователя, наследованная от абстрактного класса AbstractUser. Хранит информацию о пользователе.
+    В родительском классе отключено поле: username.
+    Авторизация заменена на поле: email"""
+
     username = None
     email = models.EmailField(unique=True,
                               verbose_name='Email',
@@ -37,7 +40,14 @@ class User(AbstractUser):
 
 
 class Payment(models.Model):
-    """Создание модели платежи"""
+    """Модель платежа. Связана с моделями Course (обучающего курса), Lesson (урок), User (пользователь)
+    и хранит информацию о платежах в полях:
+        - user: поле внешнего ключа для связи с моделью User
+        - payment_date: поле информации о дате платежа (заполняется автоматически при создании)
+        - course: поле внешнего ключа для связи с моделью Course
+        - lesson: поле внешнего ключа для связи с моделью Lesson
+        - amount: поле суммы платежа
+        - payment_method: поле выбора для метода оплаты (Наличные или Перевод на счет)"""
 
     PAYMENT_METHOD_CHOICES = [
         ('cash', 'Наличные'),

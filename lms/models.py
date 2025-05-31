@@ -2,6 +2,11 @@ from django.db import models
 
 
 class Course(models.Model):
+    """Модель обучающего курса. Хранит информацию об обучающем курсе в полях:
+        - title: название обучающего курса
+        - preview: картинка с изображением обучающего курса
+        - description: описание обучающего курса"""
+
     title = models.CharField(max_length=100,
                              verbose_name='Название курса',
                              help_text='Введите название курса')
@@ -24,6 +29,13 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
+    """Модель урока. Связана с моделью Course (обучающего курса) и хранит информацию об уроке в полях:
+        - course: поле внешнего ключа для связи с моделью Course
+        - title: название урока
+        - description: описание урока
+        - preview: картинка с изображением урока
+        - video_url: ссылка на ресурс с видео-контентом урока"""
+
     course = models.ForeignKey(Course,
                                on_delete=models.CASCADE,
                                verbose_name='Курс',
