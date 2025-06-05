@@ -61,7 +61,7 @@ class Command(BaseCommand):
             },
             {
                 'user_id': 4,
-                'course_id': 6,
+                'course_id': 1,
                 'lesson_id': None,
                 'amount': 120000,
                 'payment_method': 'transfer',
