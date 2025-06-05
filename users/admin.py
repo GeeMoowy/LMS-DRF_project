@@ -19,8 +19,8 @@ class CustomGroupAdmin(admin.ModelAdmin):
 
 class CustomUserAdmin(UserAdmin):
     """Кастомный класс для отображения пользователей (User) в админке"""
-    list_display = ('email', 'id', 'phone_number', 'city', 'is_staff')
-    list_filter = ('is_staff', 'city')
+    list_display = ('email', 'id', 'phone_number', 'city', 'is_staff', 'display_groups')
+    list_filter = ('is_staff', 'city', 'groups')  # Фильтр по группам
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('avatar', 'phone_number', 'city')}),
@@ -34,6 +34,12 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ('email', 'phone_number')
     ordering = ('email',)
+
+    def display_groups(self, obj):
+        """Отображение групп в списке пользователей"""
+        return ", ".join([group.name for group in obj.groups.all()])
+
+    display_groups.short_description = 'Группы'
 
 
 class PaymentAdmin(admin.ModelAdmin):
