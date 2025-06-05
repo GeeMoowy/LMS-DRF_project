@@ -5,19 +5,26 @@ from lms.models import Course, Lesson
 
 class CourseAdmin(admin.ModelAdmin):
     """Класс для отображения информации о курсах (Course) в админке.
-    Отображает поля 'title', 'description' и 'id'. Фильтрует по полю 'title' и организован поиск по полям
+    Отображает поля 'title', 'owner', 'description' и 'id'. Фильтрует по полю 'owner' и организован поиск по полям
     'title' и 'description'"""
-    list_display = ('title', 'description', 'id')  # Поля в списке
-    list_filter = ('title',)  # Фильтры справа
+    list_display = ('title', 'owner', 'description', 'id')
+    list_filter = ('owner',)
     search_fields = ('title', 'description')
+
+    def save_model(self, request, obj, form, change):
+        """Переопределяет стандартное сохранение модели в админке.
+        Автоматически устанавливает владельца курса (owner) при создании нового объекта."""
+        if not obj.pk:  # Только при создании
+            obj.owner = request.user
+        super().save_model(request, obj, form, change)
 
 
 class LessonAdmin(admin.ModelAdmin):
     """Класс для отображения информации об уроках (Lesson) в админке.
-    Отображает поля 'title', 'description', 'course', 'preview' и 'video_url'. Фильтрует по полю 'title'
+    Отображает поля 'title', 'owner', 'description', 'course', 'preview' и 'video_url'. Фильтрует по полю 'owner'
     и организован поиск по полям 'title' и 'description'"""
-    list_display = ('title', 'description', 'course', 'preview', 'video_url')
-    list_filter = ('title',)
+    list_display = ('title', 'owner', 'description', 'course', 'preview', 'video_url')
+    list_filter = ('owner',)
     search_fields = ('title', 'description')
 
 
