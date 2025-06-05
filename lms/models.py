@@ -1,11 +1,14 @@
 from django.db import models
 
+from config import settings
+
 
 class Course(models.Model):
     """Модель обучающего курса. Хранит информацию об обучающем курсе в полях:
-        - title: название обучающего курса
-        - preview: картинка с изображением обучающего курса
-        - description: описание обучающего курса"""
+        - title (название): название обучающего курса
+        - preview (изображение): картинка с изображением обучающего курса
+        - description (описание): описание обучающего курса
+        - owner (владелец): при создании автоматически заполняется текущим пользователем"""
 
     title = models.CharField(max_length=100,
                              verbose_name='Название курса',
@@ -19,6 +22,12 @@ class Course(models.Model):
                                    null=True,
                                    blank=True,
                                    help_text='Введите описание курса')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.SET_NULL,
+                              verbose_name='Владелец',
+                              null=True,
+                              blank=True,
+                              related_name='courses')
 
     class Meta:
         verbose_name = 'Курс'
@@ -34,7 +43,8 @@ class Lesson(models.Model):
         - title: название урока
         - description: описание урока
         - preview: картинка с изображением урока
-        - video_url: ссылка на ресурс с видео-контентом урока"""
+        - video_url: ссылка на ресурс с видео-контентом урока
+        - owner (владелец): при создании автоматически заполняется текущим пользователем"""
 
     course = models.ForeignKey(Course,
                                on_delete=models.CASCADE,
@@ -57,6 +67,12 @@ class Lesson(models.Model):
                                 blank=True,
                                 null=True,
                                 help_text="Вставьте ссылку на видео")
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.SET_NULL,
+                              verbose_name='Владелец',
+                              null=True,
+                              blank=True,
+                              related_name='lessons')
 
     class Meta:
         verbose_name = 'Урок'
