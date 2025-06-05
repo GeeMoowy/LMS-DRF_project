@@ -10,3 +10,11 @@ class IsModerator(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and \
                request.user.groups.filter(name='moderators').exists()
+
+
+class IsOwnerOrReadOnly(BasePermission):
+    """Разрешает редактирование только владельцу профиля"""
+    def has_object_permission(self, request, view, obj):
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return True
+        return obj == request.user

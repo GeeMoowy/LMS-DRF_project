@@ -4,7 +4,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from users.models import User, Payment
-from users.serializers import UserSerializer, PaymentSerializer, UserProfileSerializer, UserProfileUpdateSerializer
+from users.permissions import IsOwnerOrReadOnly
+from users.serializers import UserSerializer, PaymentSerializer, UserProfileSerializer, UserProfileUpdateSerializer, \
+    PublicProfileSerializer
 
 
 class UserViewSet(ModelViewSet):
@@ -38,11 +40,22 @@ class PaymentViewSet(ModelViewSet):
 class UserProfileViewSet(ModelViewSet):
     """Контроллер для профиля пользователя"""
     queryset = User.objects.all()
-    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_serializer_class(self):
-        """Выбираем сериализатор в зависимости от действия"""
+        """Выбираем сериализатор в зависимости от действия и владельца"""
         if self.action in ['update', 'partial_update']:
             return UserProfileUpdateSerializer
-        return super().get_serializer_class()
+        elif self.action in ['retrieve', 'list']:
+            if self.request.user.pk == self.kwargs.get('pk', None):
+                return UserProfileSerializer
+            return PublicProfileSerializer
+        return UserProfileSerializer  # fallback
 
+    def get_queryset(self):
+        """Оптимизация запросов"""
+        queryset = super().get_queryset()
+        if self.action == 'list':
+            # Для списка возвращаем только публичные данные через сериализатор
+            return queryset
+        return queryset
