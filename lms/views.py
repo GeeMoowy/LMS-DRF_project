@@ -16,7 +16,7 @@ from users.permissions import IsOwner, IsModerator
 class CourseViewSet(ModelViewSet):
     """Контроллер для работы с объектами Course (курса).
     Переопределен метод perform_create для сохранения в поле 'owner' текущего пользователя.
-    Разрешен показ только курсов созданных текущим пользователем"""
+    Разрешен показ только курсов созданных текущим пользователем. Добавлена пагинация для вывода списка курсов"""
     serializer_class = CourseSerializer
     pagination_class = CustomPagination
 
@@ -65,7 +65,8 @@ class LessonCreateApiView(CreateAPIView):
 
 
 class LessonListApiView(ListAPIView):
-    """Просмотр списка уроков (свои для пользователей, все для модераторов)"""
+    """Просмотр списка уроков (свои для пользователей, все для модераторов).
+    Добавлена пагинация для вывода списка курсов"""
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
@@ -80,7 +81,7 @@ class LessonListApiView(ListAPIView):
 class LessonRetrieveApiView(RetrieveAPIView):
     """Контроллер для просмотра деталей выбранного урока, созданного текущим пользователем"""
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated, IsOwner, IsModerator]
+    permission_classes = [IsAuthenticated & (IsOwner | IsModerator)]
 
     def get_queryset(self):
         user = self.request.user
@@ -92,7 +93,7 @@ class LessonRetrieveApiView(RetrieveAPIView):
 class LessonUpdateApiView(UpdateAPIView):
     """Контроллер для редактирования выбранного урока, созданного текущим пользователем"""
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated, IsOwner, IsModerator]
+    permission_classes = [IsAuthenticated & (IsOwner | IsModerator)]
 
     def get_queryset(self):
         user = self.request.user
