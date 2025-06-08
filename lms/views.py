@@ -8,6 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 
 from lms.models import Course, Lesson, Subscription
+from lms.paginations import CustomPagination
 from lms.serializers import CourseSerializer, LessonSerializer
 from users.permissions import IsOwner, IsModerator
 
@@ -17,6 +18,7 @@ class CourseViewSet(ModelViewSet):
     Переопределен метод perform_create для сохранения в поле 'owner' текущего пользователя.
     Разрешен показ только курсов созданных текущим пользователем"""
     serializer_class = CourseSerializer
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         """Возвращает все курсы если пользователь в группе 'Модераторы',
@@ -66,6 +68,7 @@ class LessonListApiView(ListAPIView):
     """Просмотр списка уроков (свои для пользователей, все для модераторов)"""
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         user = self.request.user

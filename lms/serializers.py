@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
@@ -26,6 +27,7 @@ class CourseSerializer(ModelSerializer):
 
     lessons_count = SerializerMethodField()
     lessons = LessonSerializer(many=True, read_only=True)
+    is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
         model = Course
