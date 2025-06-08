@@ -1,7 +1,7 @@
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from lms.models import Course, Lesson
+from lms.models import Course, Lesson, Subscription
 from lms.validators import ExternalLinksValidator
 
 
@@ -29,7 +29,7 @@ class CourseSerializer(ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'description', 'lessons_count', 'lessons']
+        fields = ['id', 'title', 'description', 'lessons_count', 'lessons', 'is_subscribed']
         read_only_fields = ('owner',)
         validators = [ExternalLinksValidator(field='description')]
 
@@ -39,3 +39,13 @@ class CourseSerializer(ModelSerializer):
         и related_name='lessons' из модели Lesson.course
         """
         return obj.lessons.count()
+
+    def get_is_subscribed(self, obj):
+        """Сериализатор проверяет, подписан ли текущий пользователь на курс"""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return Subscription.objects.filter(
+                user=request.user,
+                course=obj
+            ).exists()
+        return False

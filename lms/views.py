@@ -1,9 +1,13 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 
-from lms.models import Course, Lesson
+from lms.models import Course, Lesson, Subscription
 from lms.serializers import CourseSerializer, LessonSerializer
 from users.permissions import IsOwner, IsModerator
 
@@ -101,3 +105,32 @@ class LessonDestroyApiView(DestroyAPIView):
 
     def get_queryset(self):
         return Lesson.objects.filter(owner=self.request.user)
+
+
+class SubscriptionAPIView(APIView):
+    """Контроллер для управления подписками на обновления для пользователя"""
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        """Метод post реализует логику управления подписками пользователей на курсы"""
+
+        # Получаем данные текущего пользователя, id курса из тела запроса и находим курс или возвращаем 404
+        user = request.user
+        course_id = request.data.get('course_id')
+        course = get_object_or_404(Course, id=course_id)
+
+        # Пытаемся найти подписку для данного пользователя и курса или создать ее
+        subscription, created = Subscription.objects.get_or_create(
+            user=user,
+            course=course
+        )
+
+        # Если подписка не была создана (существует), удаляем ее. Если создана, выводим сообщение о создании подписки
+        if not created:
+            subscription.delete()
+            message = 'Подписка удалена'
+        else:
+            message = 'Подписка добавлена'
+
+        return Response({"message": message}, status=status.HTTP_200_OK)
