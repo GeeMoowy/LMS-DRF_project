@@ -4,6 +4,7 @@ from config.settings import STRIPE_API_KEY
 
 stripe.api_key = STRIPE_API_KEY
 
+
 def create_stripe_product(product_data):
     """Создает продукт в Stripe по полям 'name' и 'description'"""
 
@@ -11,6 +12,7 @@ def create_stripe_product(product_data):
         name=product_data["name"],
         description=product_data.get("description", "")
     )
+
 
 def create_stripe_price(amount, product):
     """Создает цену в Stripe в рублях (в копейках) по полю id созданного продукта"""
@@ -20,6 +22,7 @@ def create_stripe_price(amount, product):
         unit_amount=int(amount * 100),
         product=product.id,
     )
+
 
 def create_stripe_sessions(price):
     """Создает сессию оплаты в Stripe. Возвращает кортеж с id сессии и ссылкой на оплату"""

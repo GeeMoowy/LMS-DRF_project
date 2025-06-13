@@ -7,6 +7,7 @@ from users.models import User, Payment
 
 admin.site.unregister(Group)
 
+
 @admin.register(Group)
 class CustomGroupAdmin(admin.ModelAdmin):
     """Кастомный класс для отображения групп (Group) в админке, который заменяет базовый класс групп"""
@@ -47,6 +48,7 @@ class PaymentAdmin(admin.ModelAdmin):
     list_display = ('user', 'amount', 'payment_method', 'payment_date')
     list_filter = ('payment_method', 'course', 'lesson')
     search_fields = ('user__email', 'amount')
+
 
 # Регистрация моделей
 admin.site.register(User, CustomUserAdmin)

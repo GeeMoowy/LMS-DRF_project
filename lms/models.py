@@ -14,17 +14,17 @@ class Course(models.Model):
                              verbose_name='Название курса',
                              help_text='Введите название курса')
     preview = models.ImageField(upload_to='lms/preview/course/',
-                               verbose_name='Картинка',
-                               null=True,
-                               blank=True,
-                               help_text='Укажите картинку курса')
+                                verbose_name='Картинка',
+                                null=True,
+                                blank=True,
+                                help_text='Укажите картинку курса')
     description = models.TextField(verbose_name='Описание',
                                    null=True,
                                    blank=True,
                                    help_text='Введите описание курса')
     price = models.PositiveIntegerField(verbose_name='Цена курса',
-                                   default=0,
-                                   help_text='Введите цену курса')
+                                        default=0,
+                                        help_text='Введите цену курса')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.SET_NULL,
                               verbose_name='Владелец',

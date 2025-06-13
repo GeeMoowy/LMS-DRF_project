@@ -23,7 +23,7 @@ class UserViewSet(ModelViewSet):
     def get_permissions(self):
         """Метод для определения прав доступа пользователя в зависимости от выбранного действия"""
         if self.action == "create":
-            permission_classes = [AllowAny]  #Разрешаем создавать пользователя без аутентификации
+            permission_classes = [AllowAny]  # Разрешаем создавать пользователя без аутентификации
         else:
             permission_classes = [IsAuthenticated]  # Для всех остальных действий нужна аутентификация
         return [permission() for permission in permission_classes]
@@ -106,8 +106,8 @@ class PaymentCreateAPIView(CreateAPIView):
         5. Создает платежную сессию
         6. Возвращает URL для оплаты"""
 
-        obj_type, obj_id = self.get_object_type(kwargs) # Определяем тип объекта (курс или урок)
-        obj, amount = self.get_payment_object(obj_type, obj_id) # Получаем объект и его цену
+        obj_type, obj_id = self.get_object_type(kwargs)  # Определяем тип объекта (курс или урок)
+        obj, amount = self.get_payment_object(obj_type, obj_id)  # Получаем объект и его цену
 
         if not obj:
             return Response(
@@ -115,12 +115,12 @@ class PaymentCreateAPIView(CreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        payment_data = self.prepare_payment_data(request.user, obj, obj_type, amount) # Готовим данные для платежа
+        payment_data = self.prepare_payment_data(request.user, obj, obj_type, amount)  # Готовим данные для платежа
 
-        serializer = self.get_serializer(data=payment_data) # Создаем сериализатор и валидируем данные
+        serializer = self.get_serializer(data=payment_data)  # Создаем сериализатор и валидируем данные
         serializer.is_valid(raise_exception=True)
 
-        self.perform_create(serializer, obj, obj_type) # Создаем платеж в Stripe и сохраняем в БД
+        self.perform_create(serializer, obj, obj_type)  # Создаем платеж в Stripe и сохраняем в БД
 
         return Response(
             {'payment_url': serializer.data['link']},
