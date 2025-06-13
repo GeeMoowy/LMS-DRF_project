@@ -22,6 +22,9 @@ class Course(models.Model):
                                    null=True,
                                    blank=True,
                                    help_text='Введите описание курса')
+    price = models.PositiveIntegerField(verbose_name='Цена курса',
+                                   default=0,
+                                   help_text='Введите цену курса')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.SET_NULL,
                               verbose_name='Владелец',
@@ -58,6 +61,9 @@ class Lesson(models.Model):
                                    null=True,
                                    blank=True,
                                    help_text='Введите описание урока')
+    price = models.PositiveIntegerField(verbose_name='Цена урока',
+                                        default=0,
+                                        help_text='Введите цену урока')
     preview = models.ImageField(upload_to='lms/preview/lesson/',
                                 verbose_name='Картинка',
                                 null=True,
