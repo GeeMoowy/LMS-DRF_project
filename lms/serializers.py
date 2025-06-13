@@ -31,7 +31,7 @@ class CourseSerializer(ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'description', 'lessons_count', 'lessons', 'is_subscribed']
+        fields = ['id', 'title', 'description', 'price', 'lessons_count', 'lessons', 'is_subscribed']
         read_only_fields = ('owner',)
         validators = [ExternalLinksValidator(field='description')]
 
