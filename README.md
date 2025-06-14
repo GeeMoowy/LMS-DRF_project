@@ -43,6 +43,8 @@
 `poetry add pillow`
 `poetry add django-filter`
 `poetry add djangorestframework-simplejwt`
+`poetry add drf-yasg`
+`poetry add stripe`
 
 
 ---

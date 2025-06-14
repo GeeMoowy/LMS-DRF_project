@@ -75,8 +75,21 @@ class Payment(models.Model):
                                blank=True)
     amount = models.PositiveIntegerField(verbose_name='Сумма оплаты')
     payment_method = models.CharField(max_length=20,
+                                      null=True,
+                                      blank=True,
                                       choices=PAYMENT_METHOD_CHOICES,
                                       verbose_name='Способ оплаты')
+    session_id = models.CharField(max_length=255,
+                                  blank=True,
+                                  null=True,
+                                  verbose_name='ID сессии',
+                                  help_text='Укажите id сессии')
+    link = models.URLField(max_length=400,
+                           blank=True,
+                           null=True,
+                           verbose_name='Ссылка на оплату',
+                           help_text='Укажите ссылку на оплату'
+                           )
 
     class Meta:
         verbose_name = 'Платеж'

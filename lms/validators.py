@@ -22,7 +22,7 @@ class ExternalLinksValidator:
         # Получаем переменную text по значению ключа и проверяем что text это str и не None
         text = value.get(self.field)
         if not text or not isinstance(text, str):
-            return  'Поле пустое или не строка'
+            return 'Поле пустое или не строка'
 
         # Проверяем, содержит ли текст URL, ищем все ссылки в text
         urls = re.findall(r'https?://[^\s)\]]+', text)

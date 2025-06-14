@@ -1,9 +1,7 @@
 from django.core.management.base import BaseCommand
-from datetime import datetime, timedelta
 
 from users.models import Payment, User
 from lms.models import Course, Lesson
-
 
 
 class Command(BaseCommand):
