@@ -7,9 +7,8 @@ from lms.models import Course, Subscription
 
 @shared_task
 def send_mail_about_update(course_id):
-    """"""
+    """Отправляет email-уведомления всем подписанным пользователям об обновлении курса."""
 
-    # Получаем курс по его id
     course = Course.objects.get(id=course_id)
     subscriptions = Subscription.objects.filter(course=course)
     for subscription in subscriptions:

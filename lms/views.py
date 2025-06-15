@@ -11,7 +11,7 @@ from lms.models import Course, Lesson, Subscription
 from lms.paginations import CustomPagination
 from lms.serializers import CourseSerializer, LessonSerializer
 from users.permissions import IsOwner, IsModerator
-from  lms.tasks import send_mail_about_update
+from lms.tasks import send_mail_about_update
 
 
 class CourseViewSet(ModelViewSet):
@@ -47,7 +47,7 @@ class CourseViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         """При обновлении курса отправляем уведомления подписчикам."""
-        instance = serializer.save()  # сохраняем обновленный курс
+        instance = serializer.save()
         # Запускаем асинхронную задачу Celery для рассылки писем
         send_mail_about_update.delay(instance.id)
 

@@ -6,6 +6,7 @@ from datetime import timedelta
 
 User = get_user_model()
 
+
 @shared_task
 def deactivate_users():
     """Блокировка пользователей, не заходивших более месяца"""
