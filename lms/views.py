@@ -11,6 +11,7 @@ from lms.models import Course, Lesson, Subscription
 from lms.paginations import CustomPagination
 from lms.serializers import CourseSerializer, LessonSerializer
 from users.permissions import IsOwner, IsModerator
+from  lms.tasks import send_mail_about_update
 
 
 class CourseViewSet(ModelViewSet):
@@ -43,6 +44,12 @@ class CourseViewSet(ModelViewSet):
         if self.request.user.groups.filter(name='Модераторы').exists():
             raise PermissionDenied("Модераторы не могут создавать курсы")
         serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        """При обновлении курса отправляем уведомления подписчикам."""
+        instance = serializer.save()  # сохраняем обновленный курс
+        # Запускаем асинхронную задачу Celery для рассылки писем
+        send_mail_about_update.delay(instance.id)
 
     def perform_destroy(self, instance):
         """Удаление с проверкой прав"""
