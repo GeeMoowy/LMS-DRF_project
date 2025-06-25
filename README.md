@@ -38,20 +38,6 @@
 ### Установка:
 1. Выполнить команду:
 
-`git clone git@github.com:GeeMoowy/LMS-DRF_project.git`
-`poetry add django`
-`poetry add djangorestframework`
-`poetry add python-dotenv`
-`poetry add psycopg2`
-`poetry add pillow`
-`poetry add django-filter`
-`poetry add djangorestframework-simplejwt`
-`poetry add drf-yasg`
-`poetry add stripe`
-`poetry add celery`
-`poetry add django-celery-beat`
-`poetry add redis`
-`poetry add eventlet` - (для корректной работы на windows)
 
 
 ---
