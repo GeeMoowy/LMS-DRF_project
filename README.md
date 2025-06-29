@@ -36,22 +36,33 @@
 Разработка ведется на языке программирования "PYTHON"
 
 ### Установка:
+Для работы проекта вам потребуется установленный Docker. https://www.docker.com/products/docker-desktop
 1. Выполнить команду:
-
-`git clone git@github.com:GeeMoowy/LMS-DRF_project.git`
-`poetry add django`
-`poetry add djangorestframework`
-`poetry add python-dotenv`
-`poetry add psycopg2`
-`poetry add pillow`
-`poetry add django-filter`
-`poetry add djangorestframework-simplejwt`
-`poetry add drf-yasg`
-`poetry add stripe`
-`poetry add celery`
-`poetry add django-celery-beat`
-`poetry add redis`
-`poetry add eventlet` - (для корректной работы на windows)
+`git clone git@github.com:GeeMoowy/LMS-DRF_project.git` - для копирования проекта из удаленного репозитория.
+2. Создайте файл .env в корне проекта на основе примера .env.sample
+3. Сборка и запуск контейнеров с помощью команды:
+`docker-compose up -d --build`
+4. Проверка работы контейнеров командой:
+`docker-compose ps`
+5. Выполнение миграций:
+`docker-compose exec backend python manage.py migrate`
+6. Создание суперпользователя:
+`docker-compose exec backend python manage.py createsuperuser`
+7. Остановка проекта:
+`docker-compose down`
+Для полной очистки (с удалением томов):
+`docker-compose down -v`
+8. Проверка работоспособности сервисов:
+* Для backend откройте в браузере: 
+http://localhost:8000/admin/
+* Для db выполните команду
+`docker-compose exec db psql -U ваш_пользователь -d ваша_база -c "SELECT 1;"`
+* Для Redis проверка связи через redis-cli. Команда:
+`docker-compose exec redis redis-cli ping`
+* Для celery выполните команду:
+`docker-compose logs -f celery`
+* Для celery-beat выполните команду:
+`docker-compose logs -f celery_beat`
 
 
 ---
