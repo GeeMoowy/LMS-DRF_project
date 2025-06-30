@@ -60,6 +60,20 @@ services:
       - redis
       - backend
 
+    nginx:
+      build:
+        context: ./nginx
+      ports:
+        - "80:80"
+        - "443:443"  # Опционально для HTTPS
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Конфиг Nginx
+        - static_volume:/var/www/staticfiles  # Статика Django
+        # - ./media:/var/www/media  # Раскомментируйте, если есть медиа-файлы
+      depends_on:
+        - backend  # Ждём запуска Django
+      restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:
