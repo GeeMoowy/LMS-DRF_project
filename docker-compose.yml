@@ -6,7 +6,7 @@ services:
              python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app  # Монтирование кода
-      - static_volume:/app/static  # Отдельный том для статики
+      - static_volume:/app/staticfiles  # Отдельный том для статики
     ports:
       - "8000:8000"
     env_file:
@@ -60,19 +60,18 @@ services:
       - redis
       - backend
 
-    nginx:
-      build:
-        context: ./nginx
-      ports:
-        - "80:80"
-        - "443:443"  # Опционально для HTTPS
-      volumes:
-        - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Конфиг Nginx
-        - static_volume:/var/www/staticfiles  # Статика Django
-        # - ./media:/var/www/media  # Раскомментируйте, если есть медиа-файлы
-      depends_on:
-        - backend  # Ждём запуска Django
-      restart: unless-stopped
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"  # Опционально для HTTPS
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Конфиг Nginx
+      - static_volume:/app/staticfiles  # Статика Django
+    depends_on:
+      - backend  # Ждём запуска Django
+    restart: unless-stopped
 
 volumes:
   postgres_data:
