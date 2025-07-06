@@ -41,6 +41,7 @@ jobs:
     env:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       DJANGO_SETTINGS_MODULE: config.settings
+      USE_SQLITE: "true"
 
     steps:
       - name: Check out code
