@@ -4,7 +4,6 @@ from datetime import timedelta
 from pathlib import Path
 
 from celery.schedules import crontab
-from django.conf.global_settings import AUTH_USER_MODEL, CACHES
 from dotenv import load_dotenv
 
 
