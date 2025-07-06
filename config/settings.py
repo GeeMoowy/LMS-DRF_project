@@ -162,10 +162,10 @@ CACHES = {
     }
 }
 
-if 'test' in sys.argv:
+if 'test' in sys.argv or os.getenv('USE_SQLITE'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'test_db.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
