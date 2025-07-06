@@ -108,6 +108,12 @@ jobs:
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
           docker stop myapp || true
           docker rm myapp || true
-          docker run -d --name myapp -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+          docker run -d \
+          --name $APP_NAME \
+          -e DJANGO_SETTINGS_MODULE=LMS-DRF_project.settings \
+          -e PRODUCTION=1 \
+          -p 80:$PORT \
+          --restart unless-stopped \
+          ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
           EOF
 
