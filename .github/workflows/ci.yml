@@ -110,14 +110,14 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+          
           docker stop myapp || true
           docker rm myapp || true
+          
           docker run -d \
-          --name $APP_NAME \
-          -e DJANGO_SETTINGS_MODULE=LMS-DRF_project.settings \
-          -e PRODUCTION=1 \
-          -p 80:$PORT \
-          --restart unless-stopped \
-          ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+            --name myname \
+            -e DJANGO_SETTINGS_MODULE=config.settings \
+            -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+            -p 80:8000 \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
           EOF
-
