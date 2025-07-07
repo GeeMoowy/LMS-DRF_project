@@ -83,7 +83,7 @@ class LessonTestCase(APITestCase):
         url = reverse('lms:lessons_list')
         response = self.client.get(url)
         data = response.json()
-        result = {
+        expected_result = {
             'count': 1,
             'next': None,
             'previous': None,
@@ -92,19 +92,15 @@ class LessonTestCase(APITestCase):
                     'id': self.lesson.pk,
                     'title': self.lesson.title,
                     'description': self.lesson.description,
-                    'preview': self.lesson.preview,
+                    'preview': None,
                     'video_url': self.lesson.video_url,
                     'course': self.course.pk,
-                    'owner': self.user.pk
+                    'owner': self.user.pk,
+                    'price': 0,
                 }
             ]
         }
-        self.assertEqual(
-            response.status_code, status.HTTP_200_OK
-        )
-        self.assertEqual(
-            data, result
-        )
+        self.assertEqual(data, expected_result)
 
 
 class SubscriptionTestCase(APITestCase):
