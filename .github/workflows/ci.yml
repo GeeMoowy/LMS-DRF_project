@@ -114,7 +114,9 @@ jobs:
           docker stop myapp || true
           docker rm myapp || true
           
-          docker run -d --name myapp \
+          sudo lsof -ti :80 | xargs -r sudo kill -9
+          
+          docker run -d --name myapp --restart unless-stopped \
             -e DJANGO_SETTINGS_MODULE="config.settings" \
             -e SECRET_KEY="${{ secrets.SECRET_KEY }}" \
             -p 80:8000 \
