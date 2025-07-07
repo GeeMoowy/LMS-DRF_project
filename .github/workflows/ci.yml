@@ -114,10 +114,9 @@ jobs:
           docker stop myapp || true
           docker rm myapp || true
           
-          docker run -d \
-            --name myname \
-            -e DJANGO_SETTINGS_MODULE=config.settings \
-            -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+          docker run -d --name myapp \
+            -e DJANGO_SETTINGS_MODULE="config.settings" \
+            -e SECRET_KEY="${{ secrets.SECRET_KEY }}" \
             -p 80:8000 \
             ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
           EOF
