@@ -64,6 +64,52 @@ http://localhost:8000/admin/
 * Для celery-beat выполните команду:
 `docker-compose logs -f celery_beat`
 
+# Деплой Django-проекта на удаленный сервер
+
+## Предварительные требования
+- Удаленный сервер с Ubuntu 20.04/22.04
+- Установленные Docker и Docker Compose
+- Доступ по SSH
+
+## 1. Настройка сервера
+
+### Установка Docker и Docker Compose
+```bash
+# Установка Docker
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce
+
+# Установка Docker Compose Plugin
+sudo apt-get install -y docker-compose-plugin
+
+# Проверка установки
+docker --version
+docker compose version
+
+# Добавление пользователя в группу docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
+### Настройка firewall
+```bash
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable
+```
+## 2. Настройка CI/CD (GitHub Actions)
+
+### Добавьте secrets в репозиторий GitHub:
+- DOCKER_HUB_USERNAME - ваш логин Docker Hub
+- DOCKER_HUB_TOKEN - токен Docker Hub
+- SSH_KEY - приватный ключ для доступа к серверу
+- SSH_USER - пользователь сервера (обычно root или ubuntu)
+- SERVER_IP - IP вашего сервера
+- SECRET_KEY - секретный ключ Django
 
 ---
 #### АВТОР:
