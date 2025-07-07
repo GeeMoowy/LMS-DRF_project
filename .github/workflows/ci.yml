@@ -109,16 +109,7 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
-          
-          docker stop myapp || true
-          docker rm myapp || true
-          
-          sudo lsof -ti :80 | xargs -r sudo kill -9
-          
-          docker run -d --name myapp --restart unless-stopped \
-            -e DJANGO_SETTINGS_MODULE="config.settings" \
-            -e SECRET_KEY="${{ secrets.SECRET_KEY }}" \
-            -p 80:8000 \
-            ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+          cd /home/geemoowy/LMS-DRF_project
+          docker-compose pull backend
+          docker-compose up -d
           EOF
